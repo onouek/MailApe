@@ -31,6 +31,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'user',
+    'mailinglist',
+
+    'crispy_forms',
+    'markdownify',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
