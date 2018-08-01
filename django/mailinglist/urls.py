@@ -20,4 +20,7 @@ urlpatterns = [
     path('<uuid:mailinglist_pk>/subscribe',
          views.SubscribeToMailingListView.as_view(),
          name='subscribe'),
+    path('<uuid:pk>/thankyou',
+         views.ThankYouForSubscribingView.as_view(),
+         name='subscriber_thankyou'),
 ]
