@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
-from mailinglist.models import MailingList
+from mailinglist.models import MailingList, Subscriber
 from mailinglist.forms import MailingListForm, SubscriberForm
 from mailinglist.mixins import UserCanUseMailingList
 
@@ -60,3 +60,14 @@ class SubscribeToMailingListView(CreateView):
 class ThankYouForSubscribingView(DetailView):
     model = MailingList
     template_name = 'mailinglist/subscription_thankyou.html'
+
+
+class ConfirmSubscriptionView(DetailView):
+    model = Subscriber
+    template_name = 'mailinglist/confirm_subscription.html'
+
+    def get_object(self, queryset=None):
+        subscriber = super().get_object(queryset=queryset)
+        subscriber.confirmed = True
+        subscriber.save()
+        return subscriber
