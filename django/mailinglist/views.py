@@ -55,3 +55,8 @@ class SubscribeToMailingListView(CreateView):
             MailingList,
             pk=mailing_list_pk)
         return ctx
+
+
+class ThankYouForSubscribingView(DetailView):
+    model = MailingList
+    template_name = 'mailinglist/subscription_thankyou.html'
