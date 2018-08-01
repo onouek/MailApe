@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
+from mailinglist import tasks
+
 
 class MailingList(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -24,14 +26,36 @@ class MailingList(models.Model):
         return user == self.owner
 
 
+class SubscriberManager(models.Manager):
+
+    def confirmed_subscribers_for_mailing_list(self, mailing_list):
+        qs = self.get_queryset()
+        qs = qs.filter(confirmed=True)
+        qs = qs.filter(mailing_list=mailing_list)
+        return qs
+
+
 class Subscriber(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField()
     confirmed = models.BooleanField(default=False)
     mailing_list = models.ForeignKey(to=MailingList, on_delete=models.CASCADE)
 
+    objects = SubscriberManager()
+
     class Meta:
         unique_together = ['email', 'mailing_list', ]
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        is_new = self._state.adding or force_insert
+        super().save(force_insert=force_insert, force_update=force_update,
+                     using=using, update_fields=update_fields)
+        if is_new:
+            self.send_confirmation_email()
+
+    def send_confirmation_email(self):
+            tasks.send_confirmation_email_to_subscriber.delay(self.id)
 
 
 class Message(models.Model):
