@@ -29,4 +29,7 @@ urlpatterns = [
     path('unsubscribe/<uuid:pk>',
          views.UnsubscribeView.as_view(),
          name='unsubscribe'),
+    path('<uuid:mailinglist_pk>/message/new',
+         views.CreateMessageView.as_view(),
+         name='create_message'),
 ]
