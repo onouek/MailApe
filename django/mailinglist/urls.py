@@ -32,4 +32,7 @@ urlpatterns = [
     path('<uuid:mailinglist_pk>/message/new',
          views.CreateMessageView.as_view(),
          name='create_message'),
+    path('message/<uuid:pk>',
+         views.MessageDetailView.as_view(),
+         name='view_message')
 ]
