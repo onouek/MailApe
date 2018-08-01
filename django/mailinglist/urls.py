@@ -14,4 +14,7 @@ urlpatterns = [
     path('<uuid:pk>/delete',
          views.DeleteMailingListView.as_view(),
          name='delete_mailinglist'),
+    path('<uuid:pk>/manage',
+         views.MailingListDetailView.as_view(),
+         name='manage_mailinglist'),
 ]
