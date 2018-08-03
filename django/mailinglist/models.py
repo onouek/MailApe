@@ -66,6 +66,14 @@ class Message(models.Model):
     started = models.DateTimeField(default=None, null=True)
     finished = models.DateTimeField(default=None, null=True)
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        is_new = self._state.adding or force_insert
+        super().save(force_insert=force_insert, force_update=force_update,
+                     using=using, update_fields=update_fields)
+        if is_new:
+            tasks.build_subscriber_messages_for_message.delay(self.id)
+            
 
 class SubscriberMessageManager(models.Manager):
 
