@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from mailinglist.factories import SubscriberFactory
 from mailinglist.models import Subscriber, MailingList
 
 
@@ -36,3 +37,24 @@ class SubscriberCreationTestCase(
             email='unittest@example.com',
             mailing_list=mailing_list)
         self.assertEqual(self.send_confirmation_email_mock.delay.call_count, 1)
+
+
+class SubscriberManagerTestCase(TestCase):
+
+    def testConfirmedSubscribersForMailingList(self):
+        mailing_list = MailingList.objects.create(
+            name='unit test',
+            owner=get_user_model().objects.create_user(
+                username='unit test')
+        )
+        confirmed_users = [
+            SubscriberFactory(confirmed=True, mailing_list=mailing_list)
+            for n in range(3)]
+        unconfirmed_users = [
+            SubscriberFactory(mailing_list=mailing_list)
+            for n in range(3)]
+        confirmed_users_qs = Subscriber.objects.confirmed_subscribers_for_mailing_list(
+            mailing_list=mailing_list)
+        self.assertEqual(len(confirmed_users), confirmed_users_qs.count())
+        for user in confirmed_users_qs:
+            self.assertIn(user, confirmed_users)
