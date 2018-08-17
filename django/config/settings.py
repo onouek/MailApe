@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'markdownify',
     'django_celery_results',
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
