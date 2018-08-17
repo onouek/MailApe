@@ -3,9 +3,17 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+
 from mailinglist.models import MailingList, Message, Subscriber
 from mailinglist.forms import MailingListForm, MessageForm, SubscriberForm
 from mailinglist.mixins import UserCanUseMailingList
+from mailinglist.permissions import CanUseMailingList
+from mailinglist.serializers import (MailingListSerializer,
+                                     ReadOnlyEmailSubscriberSerializer,
+                                     SubscriberSerializer)
 
 
 class MailingListListView(LoginRequiredMixin, ListView):
@@ -133,3 +141,27 @@ class CreateMessageView(LoginRequiredMixin, CreateView):
 class MessageDetailView(LoginRequiredMixin, UserCanUseMailingList,
                         DetailView):
     model = Message
+
+
+class MailingListCreateListView(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, CanUseMailingList)
+    serializer_class = MailingListSerializer
+
+    def get_queryset(self):
+        return self.request.user.mailinglist_set.all()
+
+    def get_serializer(self, *args, **kwargs):
+        data = kwargs.get('data', None)
+        if data:
+            new_data = dict(data)
+            new_data['owner'] = self.request.user.id
+            kwargs['data'] = new_data
+        return super().get_serializer(*args, **kwargs)
+
+
+class MailingListRetrieveUpdateDestroyView(
+        generics.RetrieveUpdateDestroyAPIView):
+
+    permission_classes = (IsAuthenticated, CanUseMailingList)
+    serializer_class = MailingListSerializer
+    queryset = MailingList.objects.all()
