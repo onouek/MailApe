@@ -134,16 +134,6 @@ LOGIN_URL = 'user:login'
 LOGIN_REDIRECT_URL = 'mailinglist:mailinglist_list'
 LOGOUT_REDIRECT_URL = 'user:login'
 
-EMAIL_HOST = 'smtp.example.com'
-EMAIL_HOST_USER = 'username'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-MAILING_LIST_FROM_EMAIL = 'noreply@examle.com'
-MAILING_LIST_LINK_DOMAIN = 'http://localhost'
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
 
 REST_FRAMEWORK = {
