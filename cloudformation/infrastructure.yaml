@@ -86,3 +86,10 @@ Resources:
     Properties:
       Roles:
         - !Ref SQSAccessRole
+Outputs:
+  DatabaseDNS:
+    Description: Public DNS of RDS database
+    Value: !GetAtt DatabaseServer.Endpoint.Address
+  SQSClientProfile:
+    Description: Instance Profile for EC2 instances that need SQS Access
+    Value: !GetAtt SQSClientInstance.Arn
