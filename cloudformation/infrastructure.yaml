@@ -50,3 +50,7 @@ Resources:
       PubliclyAccessible: true
       VPCSecurityGroups:
         - !GetAtt DatabaseSecurityGroup.GroupId
+  MailApeQueue:
+    Type: "AWS::SQS::Queue"
+    Properties:
+      QueueName: mailape-celery
