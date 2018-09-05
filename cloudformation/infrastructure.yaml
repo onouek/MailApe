@@ -81,3 +81,8 @@ Resources:
                 Effect: Allow
                 Action: sqs:ListQueues
                 Resource: "*"
+  SQSClientInstance:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Roles:
+        - !Ref SQSAccessRole
