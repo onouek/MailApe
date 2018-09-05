@@ -1,0 +1,6 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Mail Ape Infrastructure
+Parameters:
+  MasterDBPassword:
+    Description: Master Password for the RDS instance
+    Type: String
