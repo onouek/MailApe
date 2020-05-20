@@ -5,7 +5,7 @@ from mailinglist.models import Subscriber, MailingList
 
 class CanUseMailingList(BasePermission):
 
-    message = 'User does not have access to this resource.'
+    message = "User does not have access to this resource."
 
     def has_object_permission(self, request, view, obj):
         user = request.user

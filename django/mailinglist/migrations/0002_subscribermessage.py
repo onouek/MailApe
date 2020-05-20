@@ -8,19 +8,39 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('mailinglist', '0001_initial'),
+        ("mailinglist", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SubscriberMessage',
+            name="SubscriberMessage",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('sent', models.DateTimeField(default=None, null=True)),
-                ('last_attempt', models.DateTimeField(default=None, null=True)),
-                ('message', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mailinglist.Message')),
-                ('subscriber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mailinglist.Subscriber')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("sent", models.DateTimeField(default=None, null=True)),
+                ("last_attempt", models.DateTimeField(default=None, null=True)),
+                (
+                    "message",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="mailinglist.Message",
+                    ),
+                ),
+                (
+                    "subscriber",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="mailinglist.Subscriber",
+                    ),
+                ),
             ],
         ),
     ]

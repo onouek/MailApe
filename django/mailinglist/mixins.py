@@ -4,7 +4,6 @@ from mailinglist.models import MailingList
 
 
 class UserCanUseMailingList:
-
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         user = self.request.user
@@ -14,11 +13,10 @@ class UserCanUseMailingList:
             else:
                 raise PermissionDenied()
 
-        mailing_list_attr = getattr(obj, 'mailing_list')
+        mailing_list_attr = getattr(obj, "mailing_list")
         if issubclass(type(mailing_list_attr), MailingList):
             if mailing_list_attr.user_can_use_mailing_list(user):
                 return obj
             else:
                 raise PermissionDenied
-        raise FieldDoesNotExist('view does not know how to get mailing '
-                                   'list.')
+        raise FieldDoesNotExist("view does not know how to get mailing " "list.")
