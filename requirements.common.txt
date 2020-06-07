@@ -1,7 +1,7 @@
-django<3.0
+django
 psycopg2-binary
 django-markdownify==0.3.0
-django-crispy-forms==1.7.0
+django-crispy-forms==1.9.1
 celery<5.0
 redis<2.11
 django-celery-results<2.0
